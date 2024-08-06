@@ -35,7 +35,7 @@ The application fulfills the following user stories:
 - **Vue.js**: For building the user interface.
 - **Axios**: For making API calls to fetch product data.
 - **Vue Router**: For navigating between product listings and detailed product views.
-- **CSS / SCSS**: For styling the application.
+- **Tailwind**: For styling the application.
 
 ## Getting Started
 
