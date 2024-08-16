@@ -80,35 +80,36 @@
   </div>
 </template>
 
-<script>
-export default {
-  data() {
-    return {
-      selectedCategory: '',
-      priceRange: '',
-      searchQuery: '',
-      categories: ['Electronics', 'Books', 'Clothing'],
-      showProfilePopup: false,
-      showCartPopup: false,
-      mobileMenuOpen: false,
-    };
-  },
-  methods: {
-    filterByCategory() {
-      // Implement your category filter logic here
-    },
-    filterByPrice() {
-      // Implement your price filter logic here
-    },
-    filterBySearch() {
-      // Implement your search filter logic here
-    },
-    toggleMobileMenu() {
-      this.mobileMenuOpen = !this.mobileMenuOpen;
-    },
-  },
-};
+<script setup>
+import { ref } from 'vue';
+
+// Reactive state variables
+const selectedCategory = ref('');
+const priceRange = ref('');
+const searchQuery = ref('');
+const categories = ref(['Electronics', 'Books', 'Clothing']);
+const showProfilePopup = ref(false);
+const showCartPopup = ref(false);
+const mobileMenuOpen = ref(false);
+
+// Methods
+function filterByCategory() {
+  // Implement your category filter logic here
+}
+
+function filterByPrice() {
+  // Implement your price filter logic here
+}
+
+function filterBySearch() {
+  // Implement your search filter logic here
+}
+
+function toggleMobileMenu() {
+  mobileMenuOpen.value = !mobileMenuOpen.value;
+}
 </script>
+
 
 <style scoped>
 .navbar {
