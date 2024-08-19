@@ -1,0 +1,35 @@
+/* theme.css */
+
+/* Light Theme */
+:root {
+  --primary-color: #007bff;
+  --secondary-color: #6c757d;
+  --background-color: #ffffff;
+  --text-color: #212529;
+}
+
+[data-theme="dark"] {
+  --primary-color: #4a90e2;
+  --secondary-color: #adb5bd;
+  --background-color: #343a40;
+  --text-color: #f8f9fa;
+}
+
+/* Theme styles */
+body {
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
+
+a {
+  color: var(--primary-color);
+}
+
+button {
+  background-color: var(--primary-color);
+  color: #ffffff;
+}
+
+button.secondary {
+  background-color: var(--secondary-color);
+}
