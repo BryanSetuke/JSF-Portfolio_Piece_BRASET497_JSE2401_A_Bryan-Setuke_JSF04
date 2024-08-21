@@ -114,4 +114,4 @@ Open your browser and go to `http://localhost:5173`.
 ## Conclusion
 This project has been a valuable learning experience in building dynamic web applications with Vue.js. By focusing on user stories and experiences, I was able to create a functional and visually appealing e-commerce platform. I look forward to further enhancing the application with new features and improvements.
 
-## Video link for the presentation [ ]
+## Video link for the presentation [ https://youtu.be/LQhCpgCEqQA ]
