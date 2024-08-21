@@ -1,6 +1,6 @@
 <template>
   <div class="default-layout">
-    <nav>
+    <!-- <nav>
       <ul>
         <li><router-link to="/">Home</router-link></li>
         <li><router-link to="/products">Products</router-link></li>
@@ -8,13 +8,13 @@
         <li><router-link to="/profile">Profile</router-link></li>
         <li><router-link to="/login">Login</router-link></li>
       </ul>
-    </nav>
+    </nav> -->
     <main>
       <slot></slot>
     </main>
-    <footer>
+    <!-- <footer>
       <p>&copy; 2024 FakeStore</p>
-    </footer>
+    </footer> -->
   </div>
 </template>
 

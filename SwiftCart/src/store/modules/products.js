@@ -1,47 +1,41 @@
-import ProductService from "@/services/productservice";
+// src/stores/products.js
+import { defineStore } from "pinia";
+import ProductService from "../../services/productService";
 
-const state = {
-    products: [],
-    isLoading: false,
-    error: null,
-};
-
-const getters = {
-    allProducts: (state) => state.products,
-    isLoading: (state) => state.isLoading,
-    error: (state) => state.error,
-};
-
-const actions = {
-    async fetchProducts({ commit }) {
-        commit("setLoading", true);
-        try {
-            const products = await ProductService.getProducts();
-            commit("setProducts", products);
-        } catch (error) {
-            commit("setError", error);
-        } finally {
-            commit("setLoading", false);
-        }
+export const useProductsStore = defineStore("products", {
+    state: () => ({
+        products: [],
+        categories: [],
+        isLoading: false,
+        error: null,
+    }),
+    getters: {
+        allProducts: (state) => state.products,
+        isLoading: (state) => state.isLoading,
+        error: (state) => state.error,
+        categories: (state) => state.categories,
     },
-};
-
-const mutations = {
-    setProducts(state, products) {
-        state.products = products;
+    actions: {
+        async fetchProducts() {
+            this.isLoading = true;
+            try {
+                const products = await ProductService.getProducts();
+                this.products = products;
+                this.categories = [
+                    ...new Set(products.map((product) => product.category)),
+                ];
+            } catch (error) {
+                this.error = error;
+            } finally {
+                this.isLoading = false;
+            }
+        },
+        filterByCategory(category) {
+            this.products = category
+                ? this.products.filter(
+                      (product) => product.category === category
+                  )
+                : this.products;
+        },
     },
-    setLoading(state, isLoading) {
-        state.isLoading = isLoading;
-    },
-    setError(state, error) {
-        state.error = error;
-    },
-};
-
-export default {
-    namespaced: true,
-    state,
-    getters,
-    actions,
-    mutations,
-};
+});

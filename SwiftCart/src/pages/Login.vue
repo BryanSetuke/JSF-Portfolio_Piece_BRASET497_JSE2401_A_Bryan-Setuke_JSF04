@@ -5,8 +5,8 @@
 </template>
 
 <script>
-import AuthLayout from '@/layouts/AuthLayout.vue';
-import LoginForm from '@/components/LoginForm.vue';
+import AuthLayout from '../layouts/AuthLayout.vue';
+import LoginForm from '../components/auth/LoginForm.vue';
 
 export default {
   components: {

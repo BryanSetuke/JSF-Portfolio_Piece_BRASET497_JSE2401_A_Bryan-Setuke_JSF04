@@ -1,55 +1,61 @@
 <template>
-  <form @submit.prevent="login">
+  <form @submit.prevent="submit">
     <div>
-      <label for="username">Username:</label>
-      <input v-model="username" type="text" id="username" required />
+      <label for="email">Email:</label>
+      <input v-model="email" type="email" id="email" required />
     </div>
+
     <div>
       <label for="password">Password:</label>
-      <PasswordToggle v-model="password" />
+      <input :type="passwordVisible ? 'text' : 'password'" v-model="password" id="password" required />
+      <PasswordToggle @toggle="togglePasswordVisibility" />
     </div>
-    <button type="submit">Login</button>
-    <p v-if="error">{{ error }}</p>
+
+    <button type="submit" :disabled="loading">
+      <LoadingSpinner v-if="loading" />
+      Login
+    </button>
+
+    <p v-if="errorMessage">{{ errorMessage }}</p>
   </form>
 </template>
 
 <script>
+import { useAuthStore } from '../../store/modules/auth';
+import { useRouter } from 'vue-router';
 import PasswordToggle from './PasswordToggle.vue';
+import LoadingSpinner from '../../components/common/LoadingSpinnner.vue';
 
 export default {
-  components: {
-    PasswordToggle,
-  },
+  components: { PasswordToggle, LoadingSpinner },
   data() {
     return {
-      username: '',
+      email: '',
       password: '',
-      error: null,
+      passwordVisible: false,
+      loading: false,
+      errorMessage: '',
     };
   },
   methods: {
-    async login() {
+    togglePasswordVisibility() {
+      this.passwordVisible = !this.passwordVisible;
+    },
+    async submit() {
+      if (!this.email || !this.password) {
+        this.errorMessage = 'Please fill out all fields';
+        return;
+      }
+      this.loading = true;
+      const authStore = useAuthStore();
       try {
-        const response = await fetch('https://fakestoreapi.com/auth/login', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            username: this.username,
-            password: this.password,
-          }),
-        });
-
-        if (!response.ok) {
-          throw new Error('Login failed');
-        }
-
-        const data = await response.json();
-        localStorage.setItem('token', data.token);
-        this.$router.push('/');
+        await authStore.login({ email: this.email, password: this.password });
+        const router = useRouter();
+        router.push(router.currentRoute.value.query.redirect || '/');
       } catch (error) {
-        this.error = error.message;
+        this.errorMessage = error.message;
+      } finally {
+        this.loading = false;
       }
     },
   },

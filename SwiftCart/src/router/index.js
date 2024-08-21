@@ -5,6 +5,7 @@ import Cart from "../pages/Cart.vue";
 import Comparison from "../pages/Comparison.vue";
 import Checkout from "../pages/Checkout.vue";
 import Login from "../pages/Login.vue";
+import WishList from "../pages/WishList.vue"; 
 
 const routes = [
     {
@@ -22,6 +23,10 @@ const routes = [
         path: "/cart",
         name: "Cart",
         component: Cart,
+    },
+    {
+        path: "/wishlist", // Define route for Wish List
+        component: WishList,
     },
     {
         path: "/comparison",
@@ -47,7 +52,7 @@ const routes = [
 ];
 
 const router = createRouter({
-    history: createWebHistory(process.env.BASE_URL),
+    history: createWebHistory(),
     routes,
 });
 

@@ -7,10 +7,10 @@ const productService = {
     async getProductById(id) {
         return await api.get(`/products/${id}`);
     },
-    async getFeaturedProducts() {
-        const products = await this.getProducts();
-        return products.slice(0, 4); // Assuming first 4 products are featured
-    },
+    // async getFeaturedProducts() {
+    //     const products = await this.getProducts();
+    //     return products.slice(0, 4); 
+    // },
 };
 
 export default productService;

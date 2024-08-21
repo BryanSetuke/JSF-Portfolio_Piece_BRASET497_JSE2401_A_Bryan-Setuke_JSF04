@@ -15,8 +15,8 @@
 </template>
 
 <script>
-import DefaultLayout from '@/layouts/DefaultLayout.vue';
-import ComparisonService from '@/services/comparisonservice';
+import DefaultLayout from '../layouts/DefaultLayout.vue';
+import ComparisonService from '../services/comparisonservice';
 
 export default {
   components: {

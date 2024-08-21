@@ -1,14 +1,14 @@
 <template>
   <div class="auth-layout">
-    <header>
+    <!-- <header>
       <h1>Welcome to FakeStore</h1>
-    </header>
+    </header> -->
     <main>
       <slot></slot>
     </main>
-    <footer>
+    <!-- <footer>
       <p>&copy; 2024 FakeStore</p>
-    </footer>
+    </footer> -->
   </div>
 </template>
 

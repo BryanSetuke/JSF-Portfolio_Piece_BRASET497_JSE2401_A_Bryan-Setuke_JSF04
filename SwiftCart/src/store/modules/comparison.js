@@ -1,46 +1,28 @@
-import { storage } from "@/utils/storage";
+// src/stores/comparison.js
+import { defineStore } from "pinia";
+import { storage } from "../../utils/storage";
 
-const state = {
-    items: storage.get("comparison") || [],
-};
-
-const getters = {
-    comparisonItems: (state) => state.items,
-};
-
-const actions = {
-    addToComparison({ commit }, product) {
-        commit("addItem", product);
+export const useComparisonStore = defineStore("comparison", {
+    state: () => ({
+        items: storage.get("comparison") || [],
+    }),
+    getters: {
+        comparisonItems: (state) => state.items,
     },
-    removeFromComparison({ commit }, productId) {
-        commit("removeItem", productId);
+    actions: {
+        addToComparison(product) {
+            if (!this.items.some((item) => item.id === product.id)) {
+                this.items.push(product);
+                storage.set("comparison", this.items);
+            }
+        },
+        removeFromComparison(productId) {
+            this.items = this.items.filter((item) => item.id !== productId);
+            storage.set("comparison", this.items);
+        },
+        clearComparison() {
+            this.items = [];
+            storage.set("comparison", this.items);
+        },
     },
-    clearComparison({ commit }) {
-        commit("clearComparison");
-    },
-};
-
-const mutations = {
-    addItem(state, product) {
-        if (!state.items.some((item) => item.id === product.id)) {
-            state.items.push(product);
-        }
-        storage.set("comparison", state.items);
-    },
-    removeItem(state, productId) {
-        state.items = state.items.filter((item) => item.id !== productId);
-        storage.set("comparison", state.items);
-    },
-    clearComparison(state) {
-        state.items = [];
-        storage.set("comparison", state.items);
-    },
-};
-
-export default {
-    namespaced: true,
-    state,
-    getters,
-    actions,
-    mutations,
-};
+});
