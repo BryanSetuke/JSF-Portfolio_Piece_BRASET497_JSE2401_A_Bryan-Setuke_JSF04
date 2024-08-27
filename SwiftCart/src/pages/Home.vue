@@ -51,7 +51,8 @@ export default {
 <style scoped>
 .product-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 16px;
+    grid-template-columns: repeat(3, 1fr); 
+    gap: 16px; 
 }
+
 </style>
