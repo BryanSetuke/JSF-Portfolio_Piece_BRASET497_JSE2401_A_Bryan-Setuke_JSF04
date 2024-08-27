@@ -1,11 +1,8 @@
 <template>
     <DefaultLayout>
         <div class="home">
-            <!-- <h2>Featured Products</h2> -->
             <!-- Filters and Search -->
-            <div
-                class="flex flex-col md:flex-row justify-between items-center mb-6"
-            >
+            <div class="flex flex-col md:flex-row justify-between items-center mb-6">
                 <ProductFilterByCategory />
                 <ProductSortByPrice />
                 <ProductSearchBar />
@@ -51,8 +48,25 @@ export default {
 <style scoped>
 .product-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr); 
-    gap: 16px; 
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* Responsive grid */
+    gap: 16px; /* Space between cards */
 }
 
+@media (max-width: 640px) {
+    .product-grid {
+        grid-template-columns: repeat(1, 1fr); /* 1 card per row on small screens */
+    }
+}
+
+@media (min-width: 641px) and (max-width: 768px) {
+    .product-grid {
+        grid-template-columns: repeat(2, 1fr); /* 2 cards per row on medium screens */
+    }
+}
+
+@media (min-width: 769px) {
+    .product-grid {
+        grid-template-columns: repeat(3, 1fr); /* 3 cards per row on larger screens */
+    }
+}
 </style>
