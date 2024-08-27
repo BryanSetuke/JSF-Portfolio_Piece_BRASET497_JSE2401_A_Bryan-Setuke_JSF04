@@ -1,3 +1,4 @@
+// src/router/index.js
 import { createRouter, createWebHistory } from "vue-router";
 import { useAuthStore } from "../store/modules/auth";
 import Home from "../pages/Home.vue";
@@ -7,6 +8,7 @@ import Comparison from "../pages/Comparison.vue";
 import Checkout from "../pages/Checkout.vue";
 import Login from "../pages/Login.vue";
 import WishList from "../pages/WishList.vue";
+import NotFound from "../pages/NotFound.vue";
 
 const routes = [
     {
@@ -52,7 +54,7 @@ const routes = [
     {
         path: "/:pathMatch(.*)*",
         name: "NotFound",
-        component: () => import("../pages/NotFound.vue"),
+        component: NotFound,
     },
 ];
 
@@ -61,10 +63,13 @@ const router = createRouter({
     routes,
 });
 
+// Navigation guard to check authentication
 router.beforeEach((to, from, next) => {
     const authStore = useAuthStore();
     if (to.meta.requiresAuth && !authStore.isAuthenticated) {
-        next({ name: "Login", query: { redirect: to.fullPath } });
+        // Store the path the user was trying to access
+        authStore.setRedirectPath(to.fullPath);
+        next({ name: "Login" });
     } else {
         next();
     }
