@@ -1,35 +1,59 @@
 // src/store/modules/auth.js
 import { defineStore } from "pinia";
-import authService from "../../services/authService";
 import { storage } from "../../utils/storage";
+import router from "../../router/index";
 
 export const useAuthStore = defineStore("auth", {
     state: () => ({
-        user: storage.get("user"), // Get user from localStorage if available
-        token: storage.get("token"), // Get token from localStorage if available
+        token: storage.get("token") || null,
+        redirectPath: null,
     }),
     getters: {
         isAuthenticated: (state) => !!state.token,
-        user: (state) => state.user,
     },
     actions: {
         async login(credentials) {
             try {
-                const response = await authService.login(credentials);
-                this.token = response.token;
-                this.user = response.user;
-                storage.set("token", response.token);
-                storage.set("user", response.user);
+                const response = await fetch(
+                    "https://fakestoreapi.com/auth/login",
+                    {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({
+                            username: credentials.username,
+                            password: credentials.password,
+                        }),
+                    }
+                );
+
+                if (!response.ok) {
+                    throw new Error("Login failed");
+                }
+
+                const data = await response.json();
+                this.token = data.token;
+                storage.set("token", data.token);
+
+                // Redirect to the stored path or default to home
+                const path = this.redirectPath || "/";
+                router.push(path);
+                this.redirectPath = null; // Clear the stored path
+
                 return true;
             } catch (error) {
+                console.error("Login error:", error);
                 throw new Error(error.message);
             }
         },
         logout() {
-            this.user = null;
             this.token = null;
             storage.remove("token");
-            storage.remove("user");
+            router.push("/login");
+        },
+        setRedirectPath(path) {
+            this.redirectPath = path;
         },
     },
 });
