@@ -39,18 +39,46 @@
           <i class="fas fa-credit-card"></i>
           <span>Checkout</span>
         </router-link>
-        <router-link to="/login" class="block md:flex items-center space-x-1 hover:underline py-2 md:py-0">
-          <i class="fas fa-user"></i>
-          <span>Login</span>
-        </router-link>
+        <template v-if="!isAuthenticated">
+          <router-link to="/login" class="block md:flex items-center space-x-1 hover:underline py-2 md:py-0">
+            <i class="fas fa-user"></i>
+            <span>Login</span>
+          </router-link>
+        </template>
+        <template v-else>
+          <button @click="logout" class="block md:flex items-center space-x-1 hover:underline py-2 md:py-0">
+            <i class="fas fa-sign-out-alt"></i>
+            <span>Logout</span>
+          </button>
+        </template>
       </div>
     </div>
   </nav>
 </template>
 
 <script>
+import { useAuthStore } from '../../store/modules/auth'
+import { useRouter } from 'vue-router';
+import { computed } from 'vue';
+
 export default {
   name: 'Navbar',
+  setup() {
+    const authStore = useAuthStore();
+    const router = useRouter();
+
+    const isAuthenticated = computed(() => authStore.isAuthenticated);
+
+    const logout = () => {
+      authStore.logout();
+      router.push('/');
+    };
+
+    return {
+      isAuthenticated,
+      logout,
+    };
+  },
   data() {
     return {
       menuOpen: false
