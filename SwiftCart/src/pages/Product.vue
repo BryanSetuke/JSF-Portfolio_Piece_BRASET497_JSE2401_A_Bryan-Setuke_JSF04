@@ -9,7 +9,7 @@
       </div> -->
 
       <!-- Product Grid -->
-      <ProductGrid />
+      <!-- <ProductGrid /> -->
 
       <!-- Individual Product Display -->
       <div v-if="product" class="product mt-8">

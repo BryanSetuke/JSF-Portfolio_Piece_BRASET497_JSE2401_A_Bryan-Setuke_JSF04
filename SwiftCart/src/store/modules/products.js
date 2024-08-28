@@ -1,4 +1,3 @@
-// src/stores/products.js
 import { defineStore } from "pinia";
 import ProductService from "../../services/productService";
 
@@ -8,12 +7,30 @@ export const useProductsStore = defineStore("products", {
         categories: [],
         isLoading: false,
         error: null,
+        currentCategory: null,
+        currentSort: null,
     }),
     getters: {
         allProducts: (state) => state.products,
-        isLoading: (state) => state.isLoading,
         error: (state) => state.error,
-        categories: (state) => state.categories,
+        categoriesList: (state) => state.categories,
+        sortedAndFilteredProducts: (state) => {
+            let filteredProducts = state.currentCategory
+                ? state.products.filter(
+                      (product) => product.category === state.currentCategory
+                  )
+                : state.products;
+
+            if (state.currentSort) {
+                return [...filteredProducts].sort((a, b) => {
+                    return state.currentSort === "asc"
+                        ? a.price - b.price
+                        : b.price - a.price;
+                });
+            }
+
+            return filteredProducts;
+        },
     },
     actions: {
         async fetchProducts() {
@@ -31,11 +48,14 @@ export const useProductsStore = defineStore("products", {
             }
         },
         filterByCategory(category) {
-            this.products = category
-                ? this.products.filter(
-                      (product) => product.category === category
-                  )
-                : this.products;
+            this.currentCategory = category;
+        },
+        sortByPrice(sort) {
+            this.currentSort = sort;
+        },
+        resetFilters() {
+            this.currentCategory = null;
+            this.currentSort = null;
         },
     },
 });
